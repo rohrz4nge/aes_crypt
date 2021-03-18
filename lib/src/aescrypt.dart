@@ -31,10 +31,10 @@ enum AesMode {
 class AesCrypt {
   final _aes = _Aes();
 
-  String _password;
-  Uint8List _passBytes;
-  AesCryptOwMode _owMode;
-  Map<String, List<int>> _userdata;
+  String? _password;
+  Uint8List? _passBytes;
+  AesCryptOwMode? _owMode;
+  Map<String, List<int>>? _userdata;
 
   /// Creates the library wrapper.
   ///
@@ -88,22 +88,22 @@ class AesCrypt {
     _userdata = {};
     if (createdBy.isNotEmpty) {
       key = 'CREATED_BY';
-      _userdata[key] = createdBy.toUtf8Bytes();
-      if (key.length + _userdata[key].length + 1 > 255) {
+      _userdata![key] = createdBy.toUtf8Bytes();
+      if (key.length + _userdata![key]!.length + 1 > 255) {
         throw AesCryptArgumentError('User data \'$key\' is too long. Total length should not exceed 255 bytes.');
       }
     }
     if (createdOn.isNotEmpty) {
       key = 'CREATED_DATE';
-      _userdata[key] = createdOn.toUtf8Bytes();
-      if (key.length + _userdata[key].length + 1 > 255) {
+      _userdata![key] = createdOn.toUtf8Bytes();
+      if (key.length + _userdata![key]!.length + 1 > 255) {
         throw AesCryptArgumentError('User data \'$key\' is too long. Total length should not exceed 255 bytes.');
       }
     }
     if (createdAt.isNotEmpty) {
       key = 'CREATED_TIME';
-      _userdata[key] = createdAt.toUtf8Bytes();
-      if (key.length + _userdata[key].length + 1 > 255) {
+      _userdata![key] = createdAt.toUtf8Bytes();
+      if (key.length + _userdata![key]!.length + 1 > 255) {
         throw AesCryptArgumentError('User data \'$key\' is too long. Total length should not exceed 255 bytes.');
       }
     }
@@ -134,7 +134,7 @@ class AesCrypt {
   ///
   /// Returns [String] object containing the path to encrypted file.
   String encryptTextToFileSync(String srcString, String destFilePath, {bool utf16 = false, Endian endian = Endian.big, bool bom = false}) {
-    Uint8List bytes = utf16? srcString.toUtf16Bytes(endian, bom) : srcString.toUtf8Bytes(bom);
+    Uint8List bytes = utf16? srcString.toUtf16Bytes(endian, bom) : srcString.toUtf8Bytes(bom) as Uint8List;
     return encryptDataToFileSync(bytes, destFilePath);
   }
 
@@ -165,7 +165,7 @@ class AesCrypt {
   /// Returns [Future<String>] that completes with the path to encrypted file
   /// once the entire operation has completed.
   Future<String> encryptTextToFile(String srcString, String destFilePath, {bool utf16 = false, Endian endian = Endian.big, bool bom = false}) async {
-    Uint8List bytes = utf16? srcString.toUtf16Bytes(endian, bom) : srcString.toUtf8Bytes(bom);
+    Uint8List bytes = utf16? srcString.toUtf16Bytes(endian, bom) : srcString.toUtf8Bytes(bom) as Uint8List;
     return await encryptDataToFile(bytes, destFilePath);
   }
 
@@ -347,7 +347,7 @@ class AesCrypt {
   Uint8List hmacSha256(Uint8List key, Uint8List data) => _Cryptor().hmacSha256(key, data);
 
   /// Sets AES encryption key [key] and the initialization vector [iv].
-  void aesSetKeys(Uint8List key, [Uint8List iv]) => _aes.aesSetKeys(key, iv);
+  void aesSetKeys(Uint8List key, [Uint8List? iv]) => _aes.aesSetKeys(key, iv);
 
   /// Sets AES mode of operation as [mode].
   ///
